@@ -38,7 +38,7 @@ fun Context.formatNumber(number: String): String {
 fun Context.notifyBlocked(number: String, time: Long) {
     val nm = getSystemService(NotificationManager::class.java)
     nm.createNotificationChannel(
-        NotificationChannel(CHANNEL, getString(R.string.channel_blocked), NotificationManager.IMPORTANCE_LOW)
+        NotificationChannel(CHANNEL, getString(R.string.blocked_calls), NotificationManager.IMPORTANCE_LOW)
     )
 
     val openApp = PendingIntent.getActivity(

@@ -7,7 +7,6 @@
     <string name="notify">Notify when blocked</string>
     <string name="notify_desc">Shows a silent notification with the number, to call back or add to contacts. Hidden numbers are never shown.</string>
     <string name="notify_blocked_toast">Notifications are turned off for this app. Allow them in App info.</string>
-    <string name="channel_blocked">Blocked calls</string>
     <string name="notify_blocked">Call blocked</string>
     <string name="call_back">Call back</string>
     <string name="add_contact">Add contact</string>
@@ -30,5 +29,4 @@
     <string name="perm_role">Caller ID &amp; spam app</string>
     <string name="app_info">App info</string>
     <string name="default_apps">Default apps</string>
-    <string name="builtin_note"><b>Tip:</b> Your phone app may already have this setting built in. Options like \"Block unidentified callers\" usually only apply to hidden numbers, not unknown ones.</string>
 </resources>
