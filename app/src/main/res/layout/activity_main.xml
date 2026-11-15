@@ -1,160 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/root">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/perm_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/perm_role" />
+
+        <Button
+            android:id="@+id/open_default_apps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_apps" />
+        </LinearLayout>
 
         <Switch
             android:id="@+id/toggle"
-            style="@style/SettingSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/toggle" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_marginTop="4dp"
             android:text="@string/description" />
 
-        <!-- Only shown once blocking can run; until then these switches couldn't do anything. -->
         <LinearLayout
-            android:id="@+id/options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                style="?android:attr/listSeparatorTextViewStyle"
-                android:layout_marginTop="32dp"
-                android:paddingStart="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/options" />
 
             <Switch
                 android:id="@+id/notify"
-                style="@style/SettingSwitch"
-                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/notify" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/notify_desc" />
 
             <Switch
                 android:id="@+id/instant_decline"
-                style="@style/SettingSwitch"
-                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/instant_decline" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/instant_decline_desc" />
 
             <Switch
                 android:id="@+id/repeat_callers"
-                style="@style/SettingSwitch"
-                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/repeat_callers" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/repeat_callers_desc" />
 
-            <!-- Android 13+ only. Always shown there: Android can't tell us whether the tile is
-                 already added, and asking again just reports that it is. -->
             <Button
                 android:id="@+id/add_tile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="@string/add_tile"
                 android:visibility="gone" />
         </LinearLayout>
 
-        <!-- Shown in place of Options while blocking can't run; each row is hidden once granted. -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/blocked_calls" />
+
         <LinearLayout
-            android:id="@+id/permissions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                style="?android:attr/listSeparatorTextViewStyle"
-                android:layout_marginTop="32dp"
-                android:paddingStart="0dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/permissions" />
-
-            <TableLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:shrinkColumns="0"
-                android:stretchColumns="0">
-
-                <TableRow
-                    android:id="@+id/row_role"
-                    android:gravity="center_vertical"
-                    android:minHeight="48dp">
-
-                    <TextView
-                        android:text="@string/perm_role"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <Button
-                        android:id="@+id/open_default_apps"
-                        android:text="@string/default_apps" />
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-
-        <TextView
-            style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_marginTop="32dp"
-            android:paddingStart="0dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/blocked_calls" />
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="1"
-            android:shrinkColumns="1">
-
-            <TableRow android:paddingVertical="4dp">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/stats_total"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/stats_total" />
 
                 <TextView
                     android:id="@+id/stats_total"
-                    android:gravity="end"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-            </TableRow>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end" />
+            </LinearLayout>
 
-            <TableRow android:paddingVertical="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/stats_recent"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/stats_recent" />
 
                 <TextView
                     android:id="@+id/stats_recent"
-                    android:gravity="end"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-            </TableRow>
-        </TableLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

@@ -57,10 +57,7 @@ class MainActivity : Activity() {
     private lateinit var repeatCallers: Switch
     private lateinit var statsTotal: TextView
     private lateinit var statsRecent: TextView
-    private lateinit var options: View
     private lateinit var permissions: View
-    private lateinit var rowContacts: View
-    private lateinit var rowRole: View
     private val prefs by lazy { getSharedPreferences(PREFS, MODE_PRIVATE) }
     // The tile and BlockService can change prefs while this screen is visible (opening the shade
     // doesn't always pause the activity). Kept in a field because prefs only holds listeners weakly.
@@ -85,9 +82,7 @@ class MainActivity : Activity() {
         repeatCallers = findViewById(R.id.repeat_callers)
         statsTotal = findViewById(R.id.stats_total)
         statsRecent = findViewById(R.id.stats_recent)
-        options = findViewById(R.id.options)
-        permissions = findViewById(R.id.permissions)
-        rowRole = findViewById(R.id.row_role)
+        permissions = findViewById(R.id.perm_banner)
 
         findViewById<Button>(R.id.open_default_apps).setOnClickListener {
             startActivity(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
@@ -184,9 +179,7 @@ class MainActivity : Activity() {
             } else last
         }
 
-        options.showIf(hasRole)
         permissions.showIf(!hasRole)
-        rowRole.showIf(!hasRole)
     }
 
     // Detach the listener while setting state so only real taps are persisted.
