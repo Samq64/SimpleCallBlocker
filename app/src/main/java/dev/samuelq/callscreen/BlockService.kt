@@ -3,6 +3,7 @@ package dev.samuelq.callscreen
 import android.telecom.Call
 import android.telecom.CallScreeningService
 import android.telephony.PhoneNumberUtils
+import android.text.format.DateUtils
 
 class BlockService : CallScreeningService() {
     private val recent by lazy { getSharedPreferences(PREFS_RECENT, MODE_PRIVATE) }
@@ -16,7 +17,7 @@ class BlockService : CallScreeningService() {
             return
         }
         val now = System.currentTimeMillis()
-        forgetOldNumbers(now, prefs.getInt(KEY_REPEAT_WINDOW, DEFAULT_REPEAT_WINDOW) * 60_000L)
+        forgetOldNumbers(now, prefs.getInt(KEY_REPEAT_WINDOW, DEFAULT_REPEAT_WINDOW) * DateUtils.MINUTE_IN_MILLIS)
         val allowRepeats = prefs.getBoolean(KEY_REPEAT_CALLERS, true)
         val number = details.handle?.schemeSpecificPart?.takeIf { it.isNotBlank() }
         // CallScreeningService already filters contacts out since the app does not request READ_CONTACTS

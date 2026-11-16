@@ -60,22 +60,27 @@ fun Context.hasRole() =
 
 class MainActivity : Activity() {
     private val toggle: Switch by view(R.id.toggle)
+    private val toggleRow: View by view(R.id.toggle_row)
     private val notify: Switch by view(R.id.notify)
+    private val notifyRow: View by view(R.id.notify_row)
     private val instantDecline: Switch by view(R.id.instant_decline)
+    private val instantDeclineRow: View by view(R.id.instant_decline_row)
     private val repeatCallers: Switch by view(R.id.repeat_callers)
+    private val repeatCallersRow: View by view(R.id.repeat_callers_row)
     private val repeatWindow: View by view(R.id.repeat_window)
     private val repeatWindowValue: TextView by view(R.id.repeat_window_value)
     private val stats: TextView by view(R.id.stats)
     private val permBanner: View by view(R.id.perm_banner)
     private val addTile: View by view(R.id.add_tile)
     private val prefs by lazy { getSharedPreferences(PREFS, MODE_PRIVATE) }
+    private var enableNotifyOnReturn = false
     // The tile and BlockService can change prefs while this screen is visible (opening the shade
     // doesn't always pause the activity). Kept in a field because prefs only holds listeners weakly.
-    private var enableNotifyOnReturn = false
     private val prefsChanged = SharedPreferences.OnSharedPreferenceChangeListener { _, _ -> refresh() }
+    // Keeps "12 minutes ago" current while the screen is visible.
     private val ticker = object : Runnable {
         override fun run() {
-            refresh()
+            refreshStats()
             stats.postDelayed(this, DateUtils.MINUTE_IN_MILLIS)
         }
     }
@@ -97,7 +102,10 @@ class MainActivity : Activity() {
         }
 
         findViewById<Button>(R.id.perm_button).setOnClickListener { openDefaultApps() }
-        for (s in listOf(toggle, notify, instantDecline, repeatCallers)) setUpRow(s)
+        setUpRow(toggleRow, toggle)
+        setUpRow(notifyRow, notify)
+        setUpRow(instantDeclineRow, instantDecline)
+        setUpRow(repeatCallersRow, repeatCallers)
         repeatWindow.setOnClickListener { pickRepeatWindow() }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             addTile.apply {
@@ -159,8 +167,7 @@ class MainActivity : Activity() {
     }
 
     // The whole row toggles the switch, and reports itself to accessibility services as that switch.
-    private fun setUpRow(switch: Switch) {
-        val row = switch.parent as View
+    private fun setUpRow(row: View, switch: Switch) {
         row.setOnClickListener { switch.toggle() }
         row.accessibilityDelegate = object : View.AccessibilityDelegate() {
             @Suppress("DEPRECATION") // the int replacements need API 36
@@ -175,13 +182,11 @@ class MainActivity : Activity() {
 
     private fun repeatWindow() = prefs.getInt(KEY_REPEAT_WINDOW, DEFAULT_REPEAT_WINDOW)
 
-    private fun minutes(n: Int) = getString(R.string.minutes, n)
-
     private fun pickRepeatWindow() {
         AlertDialog.Builder(this)
             .setTitle(R.string.repeat_window)
             .setSingleChoiceItems(
-                REPEAT_WINDOWS.map(::minutes).toTypedArray(), REPEAT_WINDOWS.indexOf(repeatWindow()),
+                REPEAT_WINDOWS.map { getString(R.string.minutes, it) }.toTypedArray(), REPEAT_WINDOWS.indexOf(repeatWindow()),
             ) { dialog, which ->
                 prefs.edit().putInt(KEY_REPEAT_WINDOW, REPEAT_WINDOWS[which]).apply()
                 dialog.dismiss()
@@ -212,7 +217,8 @@ class MainActivity : Activity() {
             enableNotifyOnReturn = false
             saveSwitch(KEY_NOTIFY, true)
         }
-        ticker.run() // also runs after the permission/role dialogs close, and after visiting Settings
+        refresh() // also runs after the permission/role dialogs close, and after visiting Settings
+        stats.postDelayed(ticker, DateUtils.MINUTE_IN_MILLIS)
     }
 
     override fun onPause() {
@@ -225,15 +231,19 @@ class MainActivity : Activity() {
 
         // Show off whenever blocking cannot actually run, without overwriting the saved choice.
         val enabled = hasRole && prefs.getBoolean(KEY_ENABLED, true)
-        bind(toggle, KEY_ENABLED, enabled, hasRole) // greyed out until the banner is resolved
-        bind(notify, prefs.getBoolean(KEY_NOTIFY, false) && canNotify(), enabled, ::setNotify)
-        bind(instantDecline, KEY_INSTANT_DECLINE, prefs.getBoolean(KEY_INSTANT_DECLINE, true), enabled)
-        val repeats = prefs.getBoolean(KEY_REPEAT_CALLERS, true)
-        bind(repeatCallers, KEY_REPEAT_CALLERS, repeats, enabled)
+        bind(toggleRow, toggle, KEY_ENABLED, enabled, hasRole) // greyed out until the banner is resolved
+        bind(notifyRow, notify, prefs.getBoolean(KEY_NOTIFY, false) && canNotify(), enabled, ::setNotify)
+        bind(instantDeclineRow, instantDecline, KEY_INSTANT_DECLINE, prefs.getBoolean(KEY_INSTANT_DECLINE, true), enabled)
+        bind(repeatCallersRow, repeatCallers, KEY_REPEAT_CALLERS, prefs.getBoolean(KEY_REPEAT_CALLERS, true), enabled)
         repeatWindowValue.text = Html.fromHtml(getString(R.string.repeat_callers_desc, repeatWindow()), Html.FROM_HTML_MODE_LEGACY)
         repeatWindow.setEnabledDeep(enabled)
+        permBanner.visibility = if (hasRole) View.GONE else View.VISIBLE
+        addTile.setEnabledDeep(hasRole)
+        refreshStats()
+    }
 
-        // Counted by BlockService; this screen updates live through prefsChanged.
+    // Counted by BlockService; this screen updates live through prefsChanged.
+    private fun refreshStats() {
         val count = prefs.getInt(KEY_BLOCKED_COUNT, 0)
         stats.text = if (count == 0) {
             getString(R.string.stats_none)
@@ -244,9 +254,6 @@ class MainActivity : Activity() {
             resources.getQuantityString(R.plurals.stats_total, count, count, since) + "\n" +
                 getString(recent, lastBlockedAgo())
         }
-
-        permBanner.showIf(!hasRole)
-        addTile.setEnabledDeep(hasRole)
     }
 
     // "Just now", "12 minutes ago", "Yesterday", then a date after a week.
@@ -258,15 +265,15 @@ class MainActivity : Activity() {
     }
 
     // Detach the listener while setting state so only real taps are persisted.
-    private fun bind(view: Switch, key: String, checked: Boolean, enabled: Boolean) =
-        bind(view, checked, enabled) { saveSwitch(key, it) }
+    private fun bind(row: View, view: Switch, key: String, checked: Boolean, enabled: Boolean) =
+        bind(row, view, checked, enabled) { saveSwitch(key, it) }
 
-    private fun bind(view: Switch, checked: Boolean, enabled: Boolean, onChange: (Boolean) -> Unit) {
+    private fun bind(row: View, view: Switch, checked: Boolean, enabled: Boolean, onChange: (Boolean) -> Unit) {
         view.setOnCheckedChangeListener(null)
         if (view.isChecked != checked) view.isChecked = checked
         view.setOnCheckedChangeListener { _, on -> onChange(on) }
         if (view.isEnabled != enabled) {
-            (view.parent as View).setEnabledDeep(enabled)
+            row.setEnabledDeep(enabled)
             view.jumpDrawablesToCurrentState()
         }
     }
@@ -275,9 +282,5 @@ class MainActivity : Activity() {
     private fun View.setEnabledDeep(enabled: Boolean) {
         isEnabled = enabled
         if (this is ViewGroup) for (i in 0 until childCount) getChildAt(i).setEnabledDeep(enabled)
-    }
-
-    private fun View.showIf(show: Boolean) {
-        visibility = if (show) View.VISIBLE else View.GONE
     }
 }

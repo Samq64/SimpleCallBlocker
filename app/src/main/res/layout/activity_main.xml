@@ -49,7 +49,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/main_switch"
+            android:id="@+id/toggle_row"
             style="@style/SettingRow">
 
             <LinearLayout style="@style/SettingText">
@@ -72,7 +72,9 @@
             style="@style/SettingHeader"
             android:text="@string/options" />
 
-        <LinearLayout style="@style/SettingRow">
+        <LinearLayout
+            android:id="@+id/notify_row"
+            style="@style/SettingRow">
 
             <LinearLayout style="@style/SettingText">
 
@@ -90,7 +92,9 @@
                 style="@style/SettingSwitch" />
         </LinearLayout>
 
-        <LinearLayout style="@style/SettingRow">
+        <LinearLayout
+            android:id="@+id/instant_decline_row"
+            style="@style/SettingRow">
 
             <LinearLayout style="@style/SettingText">
 
@@ -137,17 +141,19 @@
                 android:layout_height="32dp"
                 android:background="?android:attr/listDivider" />
 
-            <LinearLayout
-                style="@style/SettingRow"
+            <FrameLayout
+                android:id="@+id/repeat_callers_row"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@null"
-                android:paddingStart="0dp">
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
 
                 <Switch
                     android:id="@+id/repeat_callers"
-                    style="@style/SettingSwitch" />
-            </LinearLayout>
+                    style="@style/SettingSwitch"
+                    android:layout_gravity="center_vertical" />
+            </FrameLayout>
         </LinearLayout>
 
         <!-- Android 13+ only. Android can't tell us whether the quick setting
