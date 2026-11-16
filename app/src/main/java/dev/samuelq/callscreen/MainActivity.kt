@@ -15,6 +15,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Html
 import android.text.format.DateUtils
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,6 @@ import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import java.text.DateFormat
 
 const val PREFS = "prefs"
 const val KEY_ENABLED = "enabled"
@@ -65,16 +65,20 @@ class MainActivity : Activity() {
     private val repeatCallers: Switch by view(R.id.repeat_callers)
     private val repeatWindow: View by view(R.id.repeat_window)
     private val repeatWindowValue: TextView by view(R.id.repeat_window_value)
-    private val statsTotal: TextView by view(R.id.stats_total)
-    private val statsRecent: TextView by view(R.id.stats_recent)
+    private val stats: TextView by view(R.id.stats)
     private val permBanner: View by view(R.id.perm_banner)
-    private val mainSwitch: View by view(R.id.main_switch)
     private val addTile: View by view(R.id.add_tile)
     private val prefs by lazy { getSharedPreferences(PREFS, MODE_PRIVATE) }
     // The tile and BlockService can change prefs while this screen is visible (opening the shade
     // doesn't always pause the activity). Kept in a field because prefs only holds listeners weakly.
     private var enableNotifyOnReturn = false
     private val prefsChanged = SharedPreferences.OnSharedPreferenceChangeListener { _, _ -> refresh() }
+    private val ticker = object : Runnable {
+        override fun run() {
+            refresh()
+            stats.postDelayed(this, DateUtils.MINUTE_IN_MILLIS)
+        }
+    }
 
     private fun <T : View> view(id: Int) = lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(id) }
 
@@ -208,7 +212,12 @@ class MainActivity : Activity() {
             enableNotifyOnReturn = false
             saveSwitch(KEY_NOTIFY, true)
         }
-        refresh() // also runs after the permission/role dialogs close, and after visiting Settings
+        ticker.run() // also runs after the permission/role dialogs close, and after visiting Settings
+    }
+
+    override fun onPause() {
+        stats.removeCallbacks(ticker)
+        super.onPause()
     }
 
     private fun refresh() {
@@ -216,34 +225,36 @@ class MainActivity : Activity() {
 
         // Show off whenever blocking cannot actually run, without overwriting the saved choice.
         val enabled = hasRole && prefs.getBoolean(KEY_ENABLED, true)
-        bind(toggle, KEY_ENABLED, enabled, true) // hidden without the role
+        bind(toggle, KEY_ENABLED, enabled, hasRole) // greyed out until the banner is resolved
         bind(notify, prefs.getBoolean(KEY_NOTIFY, false) && canNotify(), enabled, ::setNotify)
         bind(instantDecline, KEY_INSTANT_DECLINE, prefs.getBoolean(KEY_INSTANT_DECLINE, true), enabled)
         val repeats = prefs.getBoolean(KEY_REPEAT_CALLERS, true)
         bind(repeatCallers, KEY_REPEAT_CALLERS, repeats, enabled)
-        repeatWindowValue.text = minutes(repeatWindow())
-        repeatWindow.setEnabledDeep(enabled && repeats)
+        repeatWindowValue.text = Html.fromHtml(getString(R.string.repeat_callers_desc, repeatWindow()), Html.FROM_HTML_MODE_LEGACY)
+        repeatWindow.setEnabledDeep(enabled)
 
         // Counted by BlockService; this screen updates live through prefsChanged.
         val count = prefs.getInt(KEY_BLOCKED_COUNT, 0)
-        statsRecent.showIf(count > 0)
-        if (count == 0) {
-            statsTotal.setText(R.string.stats_none)
+        stats.text = if (count == 0) {
+            getString(R.string.stats_none)
         } else {
             val since = DateUtils.formatDateTime(
                 this, prefs.getLong(KEY_FIRST_BLOCKED, 0), DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH)
-            statsTotal.text = resources.getQuantityString(R.plurals.stats_total, count, count, since)
-
-            // Just the time if it was today, otherwise the date.
-            val last = DateUtils.formatSameDayTime(
-                prefs.getLong(KEY_LAST_BLOCKED, 0), System.currentTimeMillis(), DateFormat.MEDIUM, DateFormat.SHORT)
             val recent = if (prefs.getBoolean(KEY_LAST_HIDDEN, false)) R.string.stats_recent_hidden else R.string.stats_recent
-            statsRecent.text = getString(recent, last)
+            resources.getQuantityString(R.plurals.stats_total, count, count, since) + "\n" +
+                getString(recent, lastBlockedAgo())
         }
 
         permBanner.showIf(!hasRole)
-        mainSwitch.showIf(hasRole)
         addTile.setEnabledDeep(hasRole)
+    }
+
+    // "Just now", "12 minutes ago", "Yesterday", then a date after a week.
+    private fun lastBlockedAgo(): CharSequence {
+        val last = prefs.getLong(KEY_LAST_BLOCKED, 0)
+        val now = System.currentTimeMillis()
+        if (now - last < DateUtils.MINUTE_IN_MILLIS) return getString(R.string.just_now)
+        return DateUtils.getRelativeTimeSpanString(last, now, DateUtils.MINUTE_IN_MILLIS)
     }
 
     // Detach the listener while setting state so only real taps are persisted.

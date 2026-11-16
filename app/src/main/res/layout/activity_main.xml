@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:paddingBottom="16dp">
 
-        <!-- Replaces the main switch until permission is granted -->
+        <!-- Shown above the disabled main switch until permission is granted -->
         <LinearLayout
             android:id="@+id/perm_banner"
             android:layout_width="match_parent"
@@ -52,33 +52,20 @@
             android:id="@+id/main_switch"
             style="@style/SettingRow">
 
-            <TextView
-                style="@style/SettingTitle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/toggle" />
+            <LinearLayout style="@style/SettingText">
+
+                <TextView
+                    style="@style/SettingTitle"
+                    android:text="@string/toggle" />
+
+                <TextView
+                    android:id="@+id/stats"
+                    style="@style/SettingSummary" />
+            </LinearLayout>
 
             <Switch
                 android:id="@+id/toggle"
                 style="@style/SettingSwitch" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/stats_total"
-                style="@style/SettingTitle" />
-
-            <TextView
-                android:id="@+id/stats_recent"
-                style="@style/SettingSummary" />
         </LinearLayout>
 
         <TextView
@@ -121,32 +108,45 @@
                 style="@style/SettingSwitch" />
         </LinearLayout>
 
-        <LinearLayout style="@style/SettingRowSingle">
+        <!-- Settings-style split row: the text opens the window picker, the switch toggles -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <TextView
-                style="@style/SettingTitle"
+            <LinearLayout
+                android:id="@+id/repeat_window"
+                style="@style/SettingRow"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="@string/repeat_callers" />
-
-            <Switch
-                android:id="@+id/repeat_callers"
-                style="@style/SettingSwitch" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/repeat_window"
-            style="@style/SettingRow">
-
-            <LinearLayout style="@style/SettingText">
+                android:orientation="vertical"
+                android:paddingEnd="16dp">
 
                 <TextView
                     style="@style/SettingTitle"
-                    android:text="@string/repeat_window" />
+                    android:text="@string/repeat_callers" />
 
                 <TextView
                     android:id="@+id/repeat_window_value"
                     style="@style/SettingSummary" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="32dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                style="@style/SettingRow"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:paddingStart="0dp">
+
+                <Switch
+                    android:id="@+id/repeat_callers"
+                    style="@style/SettingSwitch" />
             </LinearLayout>
         </LinearLayout>
 
@@ -154,14 +154,19 @@
             tile is already added -->
         <LinearLayout
             android:id="@+id/add_tile"
-            style="@style/SettingRowSingle"
+            style="@style/SettingRow"
             android:visibility="gone">
 
-            <TextView
-                style="@style/SettingTitle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/add_tile" />
+            <LinearLayout style="@style/SettingText">
+
+                <TextView
+                    style="@style/SettingTitle"
+                    android:text="@string/add_tile" />
+
+                <TextView
+                    style="@style/SettingSummary"
+                    android:text="@string/add_tile_desc" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Settings-style footer -->

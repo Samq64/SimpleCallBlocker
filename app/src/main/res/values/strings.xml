@@ -2,7 +2,7 @@
     <string name="app_name">Simple Call Blocker</string>
     <string name="launcher_label">Call Blocker</string>
     <string name="toggle">Block unknown numbers</string>
-    <string name="description">Blocks numbers not in your contacts. Voicemail and apps such as WhatsApp or Signal are not affected.</string>
+    <string name="description">Unknown and hidden numbers won\'t ring but may still leave a voicemail. Calls through apps like WhatsApp or Signal aren\'t affected.</string>
     <string name="options">Options</string>
     <string name="notify">Notify silently</string>
     <string name="notify_desc">Shows options to call back or add to contacts. Not shown for hidden numbers.</string>
@@ -15,7 +15,9 @@
     <string name="repeat_callers">Allow repeat callers</string>
     <string name="repeat_window">Repeat call window</string>
     <string name="minutes">%d minutes</string>
+    <string name="repeat_callers_desc"><![CDATA[Ring if the same number calls again within <b>%d\u00A0minutes</b>.]]></string>
     <string name="add_tile">Add to Quick Settings</string>
+    <string name="add_tile_desc">Turn blocking on or off without opening the app.</string>
     <string name="tile_already_added">Already in Quick Settings</string>
     <string name="tile_locked">Unlock to use</string>
     <string name="tile_setup">Setup needed</string>
@@ -26,6 +28,7 @@
     </plurals>
     <string name="stats_recent">Most recent: %1$s</string>
     <string name="stats_recent_hidden">Most recent: %1$s (hidden number)</string>
+    <string name="just_now">Just now</string>
     <string name="stats_none">No calls blocked yet</string>
     <string name="perm_role">To block calls, set this as your caller ID &amp; spam app.</string>
     <string name="open_settings">Open settings</string>
