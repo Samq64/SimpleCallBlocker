@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -125,7 +126,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     style="@style/SettingTitle"
@@ -147,7 +149,8 @@
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
-                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                tools:ignore="RtlSymmetry">
 
                 <Switch
                     android:id="@+id/repeat_callers"
@@ -175,11 +178,12 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Settings-style footer -->
+        <!-- Settings-style footer. A compound drawable would centre the icon, not left-align it. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
             android:paddingTop="24dp"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">

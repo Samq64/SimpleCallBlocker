@@ -15,7 +15,6 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Html
 import android.text.format.DateUtils
 import android.view.View
 import android.view.ViewGroup
@@ -186,7 +185,8 @@ class MainActivity : Activity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.repeat_window)
             .setSingleChoiceItems(
-                REPEAT_WINDOWS.map { getString(R.string.minutes, it) }.toTypedArray(), REPEAT_WINDOWS.indexOf(repeatWindow()),
+                REPEAT_WINDOWS.map { resources.getQuantityString(R.plurals.minutes, it, it) }.toTypedArray(),
+                REPEAT_WINDOWS.indexOf(repeatWindow()),
             ) { dialog, which ->
                 prefs.edit().putInt(KEY_REPEAT_WINDOW, REPEAT_WINDOWS[which]).apply()
                 dialog.dismiss()
@@ -233,9 +233,12 @@ class MainActivity : Activity() {
         val enabled = hasRole && prefs.getBoolean(KEY_ENABLED, true)
         bind(toggleRow, toggle, KEY_ENABLED, enabled, hasRole) // greyed out until the banner is resolved
         bind(notifyRow, notify, prefs.getBoolean(KEY_NOTIFY, false) && canNotify(), enabled, ::setNotify)
-        bind(instantDeclineRow, instantDecline, KEY_INSTANT_DECLINE, prefs.getBoolean(KEY_INSTANT_DECLINE, true), enabled)
-        bind(repeatCallersRow, repeatCallers, KEY_REPEAT_CALLERS, prefs.getBoolean(KEY_REPEAT_CALLERS, true), enabled)
-        repeatWindowValue.text = Html.fromHtml(getString(R.string.repeat_callers_desc, repeatWindow()), Html.FROM_HTML_MODE_LEGACY)
+        bind(instantDeclineRow, instantDecline, KEY_INSTANT_DECLINE,
+            prefs.getBoolean(KEY_INSTANT_DECLINE, true), enabled)
+        bind(repeatCallersRow, repeatCallers, KEY_REPEAT_CALLERS,
+            prefs.getBoolean(KEY_REPEAT_CALLERS, true), enabled)
+        val window = repeatWindow()
+        repeatWindowValue.text = resources.getQuantityString(R.plurals.repeat_callers_desc, window, window)
         repeatWindow.setEnabledDeep(enabled)
         permBanner.visibility = if (hasRole) View.GONE else View.VISIBLE
         addTile.setEnabledDeep(hasRole)
@@ -250,7 +253,8 @@ class MainActivity : Activity() {
         } else {
             val since = DateUtils.formatDateTime(
                 this, prefs.getLong(KEY_FIRST_BLOCKED, 0), DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH)
-            val recent = if (prefs.getBoolean(KEY_LAST_HIDDEN, false)) R.string.stats_recent_hidden else R.string.stats_recent
+            val recent =
+                if (prefs.getBoolean(KEY_LAST_HIDDEN, false)) R.string.stats_recent_hidden else R.string.stats_recent
             resources.getQuantityString(R.plurals.stats_total, count, count, since) + "\n" +
                 getString(recent, lastBlockedAgo())
         }

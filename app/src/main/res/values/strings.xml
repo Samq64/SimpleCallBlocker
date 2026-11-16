@@ -2,10 +2,10 @@
     <string name="app_name">Simple Call Blocker</string>
     <string name="launcher_label">Call Blocker</string>
     <string name="toggle">Block unknown numbers</string>
-    <string name="description">Unknown and hidden numbers won\'t ring but may still leave a voicemail. Calls through apps like WhatsApp or Signal aren\'t affected.</string>
+    <string name="description">Unknown and hidden numbers won\'t ring but may still leave voicemail. Calls through apps like WhatsApp or Signal aren\'t affected.</string>
     <string name="options">Options</string>
-    <string name="notify">Notify silently</string>
-    <string name="notify_desc">Shows options to call back or add to contacts. Not shown for hidden numbers.</string>
+    <string name="notify">Silently notify</string>
+    <string name="notify_desc">With options to call back or add to contacts. Not shown for hidden numbers.</string>
     <string name="notify_blocked">Call blocked</string>
     <string name="call_back">Call back</string>
     <string name="add_contact">Add contact</string>
@@ -14,8 +14,14 @@
     <string name="instant_decline_desc">Callers get voicemail or a busy tone right away, instead of ringing out.</string>
     <string name="repeat_callers">Allow repeat callers</string>
     <string name="repeat_window">Repeat call window</string>
-    <string name="minutes">%d minutes</string>
-    <string name="repeat_callers_desc"><![CDATA[Ring if the same number calls again within <b>%d\u00A0minutes</b>.]]></string>
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="repeat_callers_desc">
+        <item quantity="one">Within %d minute</item>
+        <item quantity="other">Within %d minutes</item>
+    </plurals>
     <string name="add_tile">Add to Quick Settings</string>
     <string name="add_tile_desc">Turn blocking on or off without opening the app.</string>
     <string name="tile_already_added">Already in Quick Settings</string>
