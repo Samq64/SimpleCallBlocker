@@ -38,14 +38,14 @@ fun Context.formatNumber(number: String): String {
 fun Context.notifyBlocked(number: String, time: Long) {
     val nm = getSystemService(NotificationManager::class.java)
     nm.createNotificationChannel(
-        NotificationChannel(CHANNEL, getString(R.string.blocked_calls), NotificationManager.IMPORTANCE_LOW)
+        NotificationChannel(CHANNEL, getString(R.string.notification_channel), NotificationManager.IMPORTANCE_LOW)
     )
 
     val openApp = PendingIntent.getActivity(
         this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
     val notification = Notification.Builder(this, CHANNEL)
         .setSmallIcon(R.drawable.ic_tile)
-        .setContentTitle(getString(R.string.notify_blocked))
+        .setContentTitle(getString(R.string.notification_title))
         .setContentText(formatNumber(number))
         .setWhen(time)
         .setShowWhen(true)

@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/perm_role"
+                android:text="@string/role_banner"
                 android:textAppearance="?android:attr/textAppearanceListItem" />
 
             <Button
@@ -57,7 +57,7 @@
 
                 <TextView
                     style="@style/SettingTitle"
-                    android:text="@string/toggle" />
+                    android:text="@string/block_unknown" />
 
                 <TextView
                     android:id="@+id/stats"
@@ -198,7 +198,7 @@
             <TextView
                 style="@style/SettingSummary"
                 android:layout_marginTop="16dp"
-                android:text="@string/description" />
+                android:text="@string/blocking_info" />
         </LinearLayout>
 
     </LinearLayout>

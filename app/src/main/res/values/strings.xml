@@ -1,33 +1,12 @@
 <resources>
     <string name="app_name">Simple Call Blocker</string>
     <string name="launcher_label">Call Blocker</string>
-    <string name="toggle">Block unknown numbers</string>
-    <string name="description">Unknown and hidden numbers won\'t ring but may still leave voicemail. Calls through apps like WhatsApp or Signal aren\'t affected.</string>
-    <string name="options">Options</string>
-    <string name="notify">Silently notify</string>
-    <string name="notify_desc">With options to call back or add to contacts. Not shown for hidden numbers.</string>
-    <string name="notify_blocked">Call blocked</string>
-    <string name="call_back">Call back</string>
-    <string name="add_contact">Add contact</string>
-    <string name="no_app">No app found to do this</string>
-    <string name="instant_decline">Decline instantly</string>
-    <string name="instant_decline_desc">Callers get voicemail or a busy tone right away, instead of ringing out.</string>
-    <string name="repeat_callers">Allow repeat callers</string>
-    <string name="repeat_window">Repeat call window</string>
-    <plurals name="minutes">
-        <item quantity="one">%d minute</item>
-        <item quantity="other">%d minutes</item>
-    </plurals>
-    <plurals name="repeat_callers_desc">
-        <item quantity="one">Within %d minute</item>
-        <item quantity="other">Within %d minutes</item>
-    </plurals>
-    <string name="add_tile">Add to Quick Settings</string>
-    <string name="add_tile_desc">Turn blocking on or off without opening the app.</string>
-    <string name="tile_already_added">Already in Quick Settings</string>
-    <string name="tile_locked">Unlock to use</string>
-    <string name="tile_setup">Setup needed</string>
-    <string name="blocked_calls">Calls blocked</string>
+
+    <string name="role_banner">To block calls, set this as your caller ID &amp; spam app.</string>
+    <string name="open_settings">Open settings</string>
+
+    <string name="block_unknown">Block unknown numbers</string>
+    <string name="stats_none">No calls blocked yet</string>
     <plurals name="stats_total">
         <item quantity="one">%1$d call blocked since %2$s</item>
         <item quantity="other">%1$d calls blocked since %2$s</item>
@@ -35,7 +14,37 @@
     <string name="stats_recent">Most recent: %1$s</string>
     <string name="stats_recent_hidden">Most recent: %1$s (hidden number)</string>
     <string name="just_now">Just now</string>
-    <string name="stats_none">No calls blocked yet</string>
-    <string name="perm_role">To block calls, set this as your caller ID &amp; spam app.</string>
-    <string name="open_settings">Open settings</string>
+
+    <string name="options">Options</string>
+    <string name="notify">Silently notify</string>
+    <string name="notify_desc">With options to call back or add to contacts. Not shown for hidden numbers.</string>
+
+    <string name="instant_decline">Decline instantly</string>
+    <string name="instant_decline_desc">Callers get voicemail or a busy tone right away, instead of ringing out.</string>
+
+    <string name="repeat_callers">Allow repeat callers</string>
+    <plurals name="repeat_callers_desc">
+        <item quantity="one">Within %d minute</item>
+        <item quantity="other">Within %d minutes</item>
+    </plurals>
+    <string name="repeat_window">Repeat call window</string>
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
+    <string name="add_tile">Add to Quick Settings</string>
+    <string name="add_tile_desc">Turn blocking on or off without opening the app.</string>
+    <string name="tile_already_added">Already in Quick Settings</string>
+
+    <string name="blocking_info">Unknown and hidden numbers won\'t ring but may still leave voicemail. Calls through apps like WhatsApp or Signal aren\'t affected.</string>
+
+    <string name="notification_channel">Calls blocked</string>
+    <string name="notification_title">Call blocked</string>
+    <string name="call_back">Call back</string>
+    <string name="add_contact">Add contact</string>
+    <string name="no_app">No app found to do this</string>
+
+    <string name="tile_setup">Setup needed</string>
+    <string name="tile_locked">Unlock to use</string>
 </resources>
