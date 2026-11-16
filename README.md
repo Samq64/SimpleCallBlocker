@@ -17,8 +17,9 @@ other (e.g. Truecaller).
 ### Notify when blocked
 
 Off by default. Shows a silent notification for each blocked call with the number and buttons to
-call back or add it to contacts. Calls from hidden numbers never get one. Turning it on asks for
-notification permission. Apart from the repeat caller window below, the app doesn't store blocked
+call back or add it to contacts. Calls from hidden numbers never get one. Android grants the
+notification permission along with the call screening role, so there's no separate prompt. If
+notifications have been turned off for the app, turning this on opens its notification settings. Apart from the repeat caller window below, the app doesn't store blocked
 numbers, only a count and the time of the last block (and whether it was a hidden number).
 
 ### Decline instantly

@@ -1,6 +1,5 @@
 package dev.samuelq.callblock
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.StatusBarManager
@@ -10,7 +9,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
@@ -39,10 +37,8 @@ const val KEY_LAST_HIDDEN = "last_hidden"
 const val KEY_NOTIFY = "notify"
 const val PREFS_RECENT = "recent_blocked"
 private const val KEY_ROLE_PROMPTED = "role_prompted"
-private const val KEY_NOTIFY_PROMPTED = "notify_prompted"
 
 private const val REQ_ROLE = 1
-private const val REQ_NOTIFY = 2
 private val REPEAT_WINDOWS = intArrayOf(5, 10, 15, 30, 60)
 
 // Shared by the app and the Quick Settings tile. Turning off blocking
@@ -132,25 +128,11 @@ class MainActivity : Activity() {
 
     private fun openDefaultApps() = startActivity(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
 
-    // Asked once on first launch then opens the app's notification settings.
+    // The call screening role grants POST_NOTIFICATIONS, so notifications are
+    // only off here if the userturned them off afterwards: send them to Settings.
     private fun setNotify(on: Boolean) {
-        when {
-            !on || canNotify() -> saveSwitch(KEY_NOTIFY, on)
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                !prefs.getBoolean(KEY_NOTIFY_PROMPTED, false) &&
-                checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED -> {
-                prefs.edit().putBoolean(KEY_NOTIFY_PROMPTED, true).apply()
-                requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQ_NOTIFY)
-            }
-            else -> notificationsBlocked()
-        }
+        if (!on || canNotify()) saveSwitch(KEY_NOTIFY, on) else notificationsBlocked()
         refresh() // undo the switch's own change until it's actually allowed
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == REQ_NOTIFY && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
-            saveSwitch(KEY_NOTIFY, true)
-        }
     }
 
     // The switch turns on in onResume if notifications were allowed there.
@@ -212,12 +194,11 @@ class MainActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        // Not cleared otherwise: onResume also runs between the permission result and Settings opening.
         if (enableNotifyOnReturn && canNotify()) {
             enableNotifyOnReturn = false
             saveSwitch(KEY_NOTIFY, true)
         }
-        refresh() // also runs after the permission/role dialogs close, and after visiting Settings
+        refresh() // also runs after the role dialog closes, and after visiting Settings
         stats.postDelayed(ticker, DateUtils.MINUTE_IN_MILLIS)
     }
 
