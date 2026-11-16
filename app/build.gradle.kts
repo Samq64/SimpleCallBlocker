@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "dev.samuelq.callscreen"
+    namespace = "dev.samuelq.callblock"
     compileSdk = 37
     defaultConfig {
-        applicationId = "dev.samuelq.callscreen"
+        applicationId = "dev.samuelq.callblock"
         minSdk = 29 // RoleManager + call screening role
         targetSdk = 37
         versionCode = 1

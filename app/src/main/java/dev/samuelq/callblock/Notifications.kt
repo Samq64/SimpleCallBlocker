@@ -1,4 +1,4 @@
-package dev.samuelq.callscreen
+package dev.samuelq.callblock
 
 import android.app.Activity
 import android.app.Notification
@@ -20,8 +20,8 @@ private const val CHANNEL = "blocked"
 private const val GROUP = "blocked"
 private const val SUMMARY_ID = 0
 private const val CALL_ID = 1 // with the normalized number as the tag
-private const val ACTION_CALL_BACK = "dev.samuelq.callscreen.CALL_BACK"
-private const val ACTION_ADD_CONTACT = "dev.samuelq.callscreen.ADD_CONTACT"
+private const val ACTION_CALL_BACK = "dev.samuelq.callblock.CALL_BACK"
+private const val ACTION_ADD_CONTACT = "dev.samuelq.callblock.ADD_CONTACT"
 
 fun Context.canNotify(): Boolean {
     val nm = getSystemService(NotificationManager::class.java)

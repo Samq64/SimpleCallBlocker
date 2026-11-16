@@ -1,4 +1,4 @@
-package dev.samuelq.callscreen
+package dev.samuelq.callblock
 
 import android.telecom.Call
 import android.telecom.CallScreeningService

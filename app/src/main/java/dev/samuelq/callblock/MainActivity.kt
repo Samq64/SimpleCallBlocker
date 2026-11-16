@@ -1,4 +1,4 @@
-package dev.samuelq.callscreen
+package dev.samuelq.callblock
 
 import android.Manifest
 import android.app.Activity
