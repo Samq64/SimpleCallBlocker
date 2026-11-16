@@ -7,135 +7,183 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
 
+        <!-- Replaces the main switch until permission is granted -->
         <LinearLayout
             android:id="@+id/perm_banner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:background="@color/banner_tint"
             android:gravity="center_vertical"
+            android:minHeight="72dp"
+            android:orientation="horizontal"
+            android:paddingVertical="4dp"
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:paddingEnd="4dp"
             android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/perm_role" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_warning"
+                android:tint="?android:attr/colorAccent" />
 
-        <Button
-            android:id="@+id/open_default_apps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/default_apps" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/perm_role"
+                android:textAppearance="?android:attr/textAppearanceListItem" />
+
+            <Button
+                android:id="@+id/perm_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/open_settings" />
         </LinearLayout>
 
-        <Switch
-            android:id="@+id/toggle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/toggle" />
+        <LinearLayout
+            android:id="@+id/main_switch"
+            style="@style/SettingRow">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/description" />
+            <TextView
+                style="@style/SettingTitle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/toggle" />
+
+            <Switch
+                android:id="@+id/toggle"
+                style="@style/SettingSwitch" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/options" />
+                android:id="@+id/stats_total"
+                style="@style/SettingTitle" />
+
+            <TextView
+                android:id="@+id/stats_recent"
+                style="@style/SettingSummary" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/SettingHeader"
+            android:text="@string/options" />
+
+        <LinearLayout style="@style/SettingRow">
+
+            <LinearLayout style="@style/SettingText">
+
+                <TextView
+                    style="@style/SettingTitle"
+                    android:text="@string/notify" />
+
+                <TextView
+                    style="@style/SettingSummary"
+                    android:text="@string/notify_desc" />
+            </LinearLayout>
 
             <Switch
                 android:id="@+id/notify"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/notify" />
+                style="@style/SettingSwitch" />
+        </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/notify_desc" />
+        <LinearLayout style="@style/SettingRow">
+
+            <LinearLayout style="@style/SettingText">
+
+                <TextView
+                    style="@style/SettingTitle"
+                    android:text="@string/instant_decline" />
+
+                <TextView
+                    style="@style/SettingSummary"
+                    android:text="@string/instant_decline_desc" />
+            </LinearLayout>
 
             <Switch
                 android:id="@+id/instant_decline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/instant_decline" />
+                style="@style/SettingSwitch" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/SettingRowSingle">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/instant_decline_desc" />
+                style="@style/SettingTitle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/repeat_callers" />
 
             <Switch
                 android:id="@+id/repeat_callers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/repeat_callers" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/repeat_callers_desc" />
-
-            <Button
-                android:id="@+id/add_tile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_tile"
-                android:visibility="gone" />
+                style="@style/SettingSwitch" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/blocked_calls" />
+        <LinearLayout
+            android:id="@+id/repeat_window"
+            style="@style/SettingRow">
 
+            <LinearLayout style="@style/SettingText">
+
+                <TextView
+                    style="@style/SettingTitle"
+                    android:text="@string/repeat_window" />
+
+                <TextView
+                    android:id="@+id/repeat_window_value"
+                    style="@style/SettingSummary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Android 13+ only. Android can't tell us whether the quick setting
+            tile is already added -->
+        <LinearLayout
+            android:id="@+id/add_tile"
+            style="@style/SettingRowSingle"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/SettingTitle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/add_tile" />
+        </LinearLayout>
+
+        <!-- Settings-style footer -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:paddingTop="24dp"
+            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_info"
+                android:tint="?android:attr/textColorSecondary" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/stats_total" />
-
-                <TextView
-                    android:id="@+id/stats_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/stats_recent" />
-
-                <TextView
-                    android:id="@+id/stats_recent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end" />
-            </LinearLayout>
+            <TextView
+                style="@style/SettingSummary"
+                android:layout_marginTop="16dp"
+                android:text="@string/description" />
         </LinearLayout>
 
     </LinearLayout>

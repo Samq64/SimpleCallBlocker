@@ -1,6 +1,6 @@
-# Known Callers Only
+# Simple Call Blocker
 
-A tiny Android app that only lets calls from the contacts list ring through. By default everyone
+A simple Android app that only lets calls from the contacts list ring through. By default everyone
 else is silently blocked unless they call again within 15 minutes. Voicemail is unaffected.
 Blocked calls are still recorded in the call log, but some phone apps don't show them.
 
@@ -28,10 +28,10 @@ message, depending on the carrier. When off, they hear ringing until the call ti
 
 ### Allow repeat callers
 
-On by default. If the same number calls again within 15 minutes, the second call rings. The app
-remembers blocked numbers until the next incoming call after their 15 minutes are up, and forgets
-them straight away when this option or blocking is turned off. Hidden numbers never count as
-repeats.
+On by default. If the same number calls again within an adjustable range, the second call rings.
+The app remembers blocked numbers until the next incoming call after their window is up, and
+forgets them straight away when this option or blocking is turned off. Hidden numbers never count
+as repeats.
 
 ## Limitations
 

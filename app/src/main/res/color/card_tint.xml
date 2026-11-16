@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A faint tint of the theme's own text colour, so text on it keeps its contrast on any skin. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.06" android:color="?android:attr/textColorPrimary" />
+</selector>

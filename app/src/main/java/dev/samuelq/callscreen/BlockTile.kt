@@ -17,7 +17,8 @@ class BlockTile : TileService() {
 
     private fun update() {
         val tile = qsTile ?: return
-        // Before the first unlock after boot, BlockService can't access contacts, so gray the tile out.
+        // Until the first unlock after boot, BlockService can't run (it isn't direct boot aware), so
+        // gray the tile out. Prefs can't be read yet either, so `ready &&` must come before them.
         val unlocked = getSystemService(UserManager::class.java).isUserUnlocked
         val ready = unlocked && hasRole()
         val blocking = ready && prefs.getBoolean(KEY_ENABLED, true)

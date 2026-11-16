@@ -1,12 +1,8 @@
 package dev.samuelq.callscreen
 
-import android.net.Uri
-import android.provider.ContactsContract.PhoneLookup
 import android.telecom.Call
 import android.telecom.CallScreeningService
 import android.telephony.PhoneNumberUtils
-
-private const val REPEAT_WINDOW_MS = 15 * 60 * 1000L
 
 class BlockService : CallScreeningService() {
     private val recent by lazy { getSharedPreferences(PREFS_RECENT, MODE_PRIVATE) }
@@ -20,24 +16,24 @@ class BlockService : CallScreeningService() {
             return
         }
         val now = System.currentTimeMillis()
-        forgetOldNumbers(now)
+        forgetOldNumbers(now, prefs.getInt(KEY_REPEAT_WINDOW, DEFAULT_REPEAT_WINDOW) * 60_000L)
         val allowRepeats = prefs.getBoolean(KEY_REPEAT_CALLERS, true)
-        val number = details.handle?.schemeSpecificPart
+        val number = details.handle?.schemeSpecificPart?.takeIf { it.isNotBlank() }
         // CallScreeningService already filters contacts out since the app does not request READ_CONTACTS
         // https://android.googlesource.com/platform/packages/services/Telecomm/+/refs/heads/main/src/com/android/server/telecom/callfiltering/CallScreeningServiceFilter.java#290
-        val block = (number.isNullOrBlank() || !(allowRepeats && isRepeatCall(number, now)))
+        val block = number == null || !(allowRepeats && isRepeatCall(number, now))
         if (block) {
             val count = prefs.getInt(KEY_BLOCKED_COUNT, 0) + 1
             val edit = prefs.edit()
             if (count == 1) edit.putLong(KEY_FIRST_BLOCKED, now)
             edit.putInt(KEY_BLOCKED_COUNT, count)
                 .putLong(KEY_LAST_BLOCKED, now)
-                .putBoolean(KEY_LAST_HIDDEN, number.isNullOrBlank())
+                .putBoolean(KEY_LAST_HIDDEN, number == null)
                 .apply()
-            if (!number.isNullOrBlank() && prefs.getBoolean(KEY_NOTIFY, false) && canNotify()) {
+            if (number != null && prefs.getBoolean(KEY_NOTIFY, false) && canNotify()) {
                 notifyBlocked(number, now)
             }
-        } else if (!number.isNullOrBlank()) {
+        } else {
             dismissBlocked(number)
         }
         respondToCall(
@@ -50,23 +46,21 @@ class BlockService : CallScreeningService() {
         )
     }
 
-    private fun forgetOldNumbers(now: Long) {
+    private fun forgetOldNumbers(now: Long, windowMs: Long) {
         val edit = recent.edit()
         for ((key, time) in recent.all) {
-            if (now - (time as Long) > REPEAT_WINDOW_MS) edit.remove(key)
+            if (now - (time as Long) > windowMs) edit.remove(key)
         }
         edit.apply()
     }
 
     // True if this number was blocked within the window, so this call should ring. Otherwise,
     // remembers it for next time. Only asked about calls that would be blocked.
-    private fun isRepeatCall(number: String?, now: Long): Boolean {
-        if (number.isNullOrBlank()) return false
+    private fun isRepeatCall(number: String, now: Long): Boolean {
         val key = PhoneNumberUtils.normalizeNumber(number)
         if (recent.contains(key)) return true // expired entries were just removed
         // Keep the first call's time, so further calls don't extend the window.
         recent.edit().putLong(key, now).apply()
         return false
     }
-
 }
