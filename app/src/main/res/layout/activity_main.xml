@@ -185,7 +185,7 @@
             android:orientation="vertical"
             tools:ignore="UseCompoundDrawables"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-            android:paddingTop="24dp"
+            android:paddingTop="16dp"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
 
             <ImageView
@@ -197,7 +197,7 @@
 
             <TextView
                 style="@style/SettingSummary"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/blocking_info" />
         </LinearLayout>
 
