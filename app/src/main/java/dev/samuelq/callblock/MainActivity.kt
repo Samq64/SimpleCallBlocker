@@ -215,9 +215,9 @@ class MainActivity : Activity() {
         bind(toggleRow, toggle, KEY_ENABLED, enabled, hasRole) // greyed out until the banner is resolved
         bind(notifyRow, notify, prefs.getBoolean(KEY_NOTIFY, false) && canNotify(), enabled, ::setNotify)
         bind(instantDeclineRow, instantDecline, KEY_INSTANT_DECLINE,
-            prefs.getBoolean(KEY_INSTANT_DECLINE, true), enabled)
+            prefs.getBoolean(KEY_INSTANT_DECLINE, false), enabled)
         bind(repeatCallersRow, repeatCallers, KEY_REPEAT_CALLERS,
-            prefs.getBoolean(KEY_REPEAT_CALLERS, true), enabled)
+            prefs.getBoolean(KEY_REPEAT_CALLERS, false), enabled)
         val window = repeatWindow()
         repeatWindowValue.text = resources.getQuantityString(R.plurals.repeat_callers_desc, window, window)
         repeatWindow.setEnabledDeep(enabled)
