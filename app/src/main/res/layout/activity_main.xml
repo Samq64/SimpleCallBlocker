@@ -73,46 +73,6 @@
             style="@style/SettingHeader"
             android:text="@string/options" />
 
-        <LinearLayout
-            android:id="@+id/notify_row"
-            style="@style/SettingRow">
-
-            <LinearLayout style="@style/SettingText">
-
-                <TextView
-                    style="@style/SettingTitle"
-                    android:text="@string/notify" />
-
-                <TextView
-                    style="@style/SettingSummary"
-                    android:text="@string/notify_desc" />
-            </LinearLayout>
-
-            <Switch
-                android:id="@+id/notify"
-                style="@style/SettingSwitch" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/instant_decline_row"
-            style="@style/SettingRow">
-
-            <LinearLayout style="@style/SettingText">
-
-                <TextView
-                    style="@style/SettingTitle"
-                    android:text="@string/instant_decline" />
-
-                <TextView
-                    style="@style/SettingSummary"
-                    android:text="@string/instant_decline_desc" />
-            </LinearLayout>
-
-            <Switch
-                android:id="@+id/instant_decline"
-                style="@style/SettingSwitch" />
-        </LinearLayout>
-
         <!-- Settings-style split row: the text opens the window picker, the switch toggles -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -157,6 +117,46 @@
                     style="@style/SettingSwitch"
                     android:layout_gravity="center_vertical" />
             </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/instant_decline_row"
+            style="@style/SettingRow">
+
+            <LinearLayout style="@style/SettingText">
+
+                <TextView
+                    style="@style/SettingTitle"
+                    android:text="@string/instant_decline" />
+
+                <TextView
+                    style="@style/SettingSummary"
+                    android:text="@string/instant_decline_desc" />
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/instant_decline"
+                style="@style/SettingSwitch" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/notify_row"
+            style="@style/SettingRow">
+
+            <LinearLayout style="@style/SettingText">
+
+                <TextView
+                    style="@style/SettingTitle"
+                    android:text="@string/notify" />
+
+                <TextView
+                    style="@style/SettingSummary"
+                    android:text="@string/notify_desc" />
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/notify"
+                style="@style/SettingSwitch" />
         </LinearLayout>
 
         <!-- Android 13+ only. Android can't tell us whether the quick setting

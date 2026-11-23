@@ -18,7 +18,7 @@ class BlockService : CallScreeningService() {
         }
         val now = System.currentTimeMillis()
         forgetOldNumbers(now, prefs.getInt(KEY_REPEAT_WINDOW, DEFAULT_REPEAT_WINDOW) * DateUtils.MINUTE_IN_MILLIS)
-        val allowRepeats = prefs.getBoolean(KEY_REPEAT_CALLERS, false)
+        val allowRepeats = prefs.getBoolean(KEY_REPEAT_CALLERS, true)
         val number = details.handle?.schemeSpecificPart?.takeIf { it.isNotBlank() }
         // CallScreeningService already filters contacts out since the app does not request READ_CONTACTS
         // https://android.googlesource.com/platform/packages/services/Telecomm/+/refs/heads/main/src/com/android/server/telecom/callfiltering/CallScreeningServiceFilter.java#290

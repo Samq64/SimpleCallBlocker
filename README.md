@@ -14,25 +14,25 @@ other (e.g. Truecaller).
 
 ## Options
 
-### Notify when blocked
-
-Shows a silent notification for each blocked call with the number and buttons to
-call back or add it to contacts. Calls from hidden numbers never get one. Android grants the
-notification permission along with the call screening role, so there's no separate prompt. If
-notifications have been turned off for the app, turning this on opens its notification settings. Apart from the repeat caller window below, the app doesn't store blocked
-numbers, only a count and the time of the last block (and whether it was a hidden number).
-
-### Decline instantly
-
-Blocked callers go straight to voicemail, or hear a busy tone or "unavailable"
-message, depending on the carrier. When off, they hear ringing until the call times out.
-
 ### Allow repeat callers
 
 If the same number calls again within an adjustable range, the second call rings.
 The app remembers blocked numbers until the next incoming call after their window is up, and
 forgets them straight away when this option or blocking is turned off. Hidden numbers never count
 as repeats.
+
+### Decline instantly
+
+Blocked callers go straight to voicemail, or hear a busy tone or "unavailable"
+message, depending on the carrier. When off, they hear ringing until the call times out.
+
+### Notify when blocked
+
+Shows a silent notification for each blocked call with the number and buttons to
+call back or add it to contacts. Calls from hidden numbers never get one. Android grants the
+notification permission along with the call screening role, so there's no separate prompt. If
+notifications have been turned off for the app, turning this on opens its notification settings. Apart from the repeat caller window above, the app doesn't store blocked
+numbers, only a count and the time of the last block (and whether it was a hidden number).
 
 ## Limitations
 

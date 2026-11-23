@@ -217,7 +217,7 @@ class MainActivity : Activity() {
         bind(instantDeclineRow, instantDecline, KEY_INSTANT_DECLINE,
             prefs.getBoolean(KEY_INSTANT_DECLINE, false), enabled)
         bind(repeatCallersRow, repeatCallers, KEY_REPEAT_CALLERS,
-            prefs.getBoolean(KEY_REPEAT_CALLERS, false), enabled)
+            prefs.getBoolean(KEY_REPEAT_CALLERS, true), enabled)
         val window = repeatWindow()
         repeatWindowValue.text = resources.getQuantityString(R.plurals.repeat_callers_desc, window, window)
         repeatWindow.setEnabledDeep(enabled)
