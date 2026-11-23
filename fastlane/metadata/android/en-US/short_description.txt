@@ -1,0 +1,1 @@
+Blocks calls from non-contacts in 100 KB, with a Quick Settings toggle
